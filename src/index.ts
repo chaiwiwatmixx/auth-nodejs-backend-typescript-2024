@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import courseRoute from "./routes/couse-route";
 import authRoute from "./routes/auth-route";
+import lessonRoute from "./routes/lesson-route";
 const app = express();
 import errorHandler from "./middlewares/error";
 
@@ -13,6 +14,7 @@ app.use(express.json());
 // route
 app.use("/auth", authRoute);
 app.use("/course", courseRoute);
+app.use("/lesson", lessonRoute);
 
 // error mid
 app.use(errorHandler);

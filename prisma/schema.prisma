@@ -21,6 +21,52 @@ model User {
   role      Role
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  courses   Course[] @relation("CourseAdmin")
+}
+
+model Course {
+  id             Int        @id @default(autoincrement())
+  title          String
+  subDescription String
+  description    String
+  originalPrice  Float?
+  price          Float
+  image          String
+  whoIsThisFor   String?
+  teacher        String?
+  adminId        Int
+  admin          User       @relation("CourseAdmin", fields: [adminId], references: [id])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  lessons        Lesson[]   @relation("CourseLessons")
+  question       Question[] @relation("Coursequestion")
+}
+
+model Question {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+  courseId Int
+  course   Course @relation("Coursequestion", fields: [courseId], references: [id])
+}
+
+model Lesson {
+  id             Int       @id @default(autoincrement())
+  titleLesson    String
+  videos         Int?
+  durationLesson String?
+  courseId       Int
+  course         Course    @relation("CourseLessons", fields: [courseId], references: [id])
+  sections       Section[] @relation("LessonSections")
+}
+
+model Section {
+  id              Int      @id @default(autoincrement())
+  titleSection    String
+  durationSection String?
+  preview         Boolean?
+  lessonId        Int
+  lesson          Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade, name: "LessonSections")
 }
 
 enum Role {
